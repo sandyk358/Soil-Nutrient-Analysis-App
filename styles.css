@@ -1,0 +1,197 @@
+/* General App Styling */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f7f6;
+  color: #333;
+}
+
+.App {
+  text-align: center;
+}
+
+/* Authentication Pages (Login & Signup) */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.auth-card {
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+}
+
+.auth-card h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.auth-card p {
+  color: #777;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+.auth-button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #6a11cb;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-button:hover {
+  background-color: #2575fc;
+}
+
+.switch-auth {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.switch-auth a {
+  color: #6a11cb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Home Page */
+.homepage-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.homepage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.homepage-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.logout-button {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.logout-button:hover {
+  background-color: #eee;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  text-align: left;
+}
+
+.card h2 {
+  margin-top: 0;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  color: #6a11cb;
+}
+
+.nutrients-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  text-align: center;
+}
+
+.nutrient-item {
+  padding: 15px;
+  border-radius: 8px;
+  color: white;
+}
+
+.nutrient-item h3 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  text-transform: capitalize;
+}
+
+.nutrient-value {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.nutrient-status {
+  font-size: 14px;
+  font-style: italic;
+  margin: 5px 0 0 0;
+}
+
+/* Status colors */
+.status-low { background-color: #ef5350; } /* Red */
+.status-optimal { background-color: #4caf50; } /* Green */
+.status-high { background-color: #ff9800; } /* Orange */
+
+.recommendation-card p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.upload-card .upload-input {
+  display: block;
+  margin: 20px 0;
+}
