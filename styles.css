@@ -4,7 +4,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f4f7f6;
+  background: linear-gradient(to bottom, #d7e5d2 0%, #f4f7f6 100%);
   color: #333;
 }
 
@@ -12,17 +12,17 @@ body {
   text-align: center;
 }
 
-/* Authentication Pages (Login & Signup) */
+/* Authentication Pages */
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: url('https://images.unsplash.com/photo-1526318472351-b17c8b6bff6e?auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
 }
 
 .auth-card {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.95);
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -33,12 +33,12 @@ body {
 
 .auth-card h2 {
   font-size: 28px;
-  color: #333;
+  color: #2f7a2f;
   margin-bottom: 10px;
 }
 
 .auth-card p {
-  color: #777;
+  color: #555;
   margin-bottom: 30px;
 }
 
@@ -50,16 +50,16 @@ body {
   display: block;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #555;
+  color: #333;
 }
 
 .input-group input {
   width: 100%;
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 16px;
-  box-sizing: border-box; /* Ensures padding doesn't affect width */
+  box-sizing: border-box;
 }
 
 .auth-button {
@@ -67,7 +67,7 @@ body {
   padding: 15px;
   border: none;
   border-radius: 8px;
-  background-color: #6a11cb;
+  background-color: #2f7a2f;
   color: white;
   font-size: 16px;
   font-weight: 700;
@@ -76,7 +76,7 @@ body {
 }
 
 .auth-button:hover {
-  background-color: #2575fc;
+  background-color: #1f5c1f;
 }
 
 .switch-auth {
@@ -86,7 +86,7 @@ body {
 }
 
 .switch-auth a {
-  color: #6a11cb;
+  color: #2f7a2f;
   text-decoration: none;
   font-weight: 600;
 }
@@ -103,21 +103,23 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #eaf5ea;
   border-radius: 8px;
   margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .homepage-header h1 {
   margin: 0;
   font-size: 24px;
+  color: #2f7a2f;
 }
 
 .logout-button {
   padding: 10px 20px;
-  border: 1px solid #ddd;
-  background-color: #f8f8f8;
+  border: none;
+  background-color: #2f7a2f;
+  color: white;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
@@ -125,7 +127,7 @@ body {
 }
 
 .logout-button:hover {
-  background-color: #eee;
+  background-color: #1f5c1f;
 }
 
 .dashboard {
@@ -135,7 +137,7 @@ body {
 }
 
 .card {
-  background-color: white;
+  background-color: #f4f7f6;
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -144,10 +146,10 @@ body {
 
 .card h2 {
   margin-top: 0;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid #cde6cd;
   padding-bottom: 10px;
   margin-bottom: 20px;
-  color: #6a11cb;
+  color: #2f7a2f;
 }
 
 .nutrients-grid {
@@ -182,9 +184,9 @@ body {
 }
 
 /* Status colors */
-.status-low { background-color: #ef5350; } /* Red */
-.status-optimal { background-color: #4caf50; } /* Green */
-.status-high { background-color: #ff9800; } /* Orange */
+.status-low { background-color: #ef5350; }
+.status-optimal { background-color: #4caf50; }
+.status-high { background-color: #ff9800; }
 
 .recommendation-card p {
   font-size: 16px;
