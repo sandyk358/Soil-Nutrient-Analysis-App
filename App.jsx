@@ -1,174 +1,396 @@
-import React, { useState } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  Link,
-  useNavigate
-} from 'react-router-dom';
-import './styles.css';
+import React, { useState, useRef, useEffect } from 'react';
+import Chart from 'chart.js/auto';
 
-// Login Page
-const LoginPage = ({ setIsAuthenticated }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (email && password) {
-      console.log('Logging in with:', { email, password });
-      setIsAuthenticated(true);
-      navigate('/home');
-    } else {
-      alert('Please enter both email and password.');
+const styles = {
+  global: {
+    margin: 0,
+    padding: 0,
+    boxSizing: 'border-box',
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    background: '#f5f7fa',
+    color: '#333',
+    minHeight: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  app: {
+    width: '100%',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  authContainer: {
+    width: 350,
+    background: 'white',
+    padding: '2rem',
+    borderRadius: 12,
+    boxShadow: '0 5px 20px rgba(0,0,0,0.1)',
+    textAlign: 'center',
+  },
+  profilePic: {
+    width: 120,
+    height: 120,
+    borderRadius: '50%',
+    objectFit: 'cover',
+    marginBottom: '1rem',
+  },
+  hero: {
+    textAlign: 'center',
+    padding: '4rem 2rem',
+    backgroundImage: "url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1350&q=80')",
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    color: 'white',
+    borderRadius: 12,
+  },
+  nav: {
+    background: 'linear-gradient(90deg, #4e54c8, #8f94fb)',
+    padding: '1rem 2rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    color: 'white',
+    position: 'sticky',
+    top: 0,
+    zIndex: 1000,
+  },
+  navUl: {
+    display: 'flex',
+    listStyle: 'none',
+    gap: '1.5rem',
+    cursor: 'pointer',
+  },
+  navLi: {
+    transition: '0.3s',
+  },
+  navLiHover: {
+    textDecoration: 'underline',
+  },
+  cardGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: '1.5rem',
+  },
+  card: {
+    background: 'white',
+    padding: '1.5rem',
+    borderRadius: 12,
+    boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
+    transition: '0.3s',
+  },
+  cardHover: {
+    transform: 'translateY(-5px)',
+  },
+  formGroup: {
+    marginBottom: '1rem',
+  },
+  label: {
+    display: 'block',
+    marginBottom: '0.5rem',
+  },
+  input: {
+    width: '100%',
+    padding: '0.7rem',
+    borderRadius: 8,
+    border: '1px solid #ccc',
+  },
+  textarea: {
+    width: '100%',
+    padding: '0.7rem',
+    borderRadius: 8,
+    border: '1px solid #ccc',
+  },
+  button: {
+    padding: '0.7rem 1.5rem',
+    border: 'none',
+    borderRadius: 8,
+    background: '#4e54c8',
+    color: 'white',
+    cursor: 'pointer',
+    transition: '0.3s',
+  },
+  buttonHover: {
+    background: '#3c40a0',
+  },
+  section: {
+    padding: '2rem',
+    animation: 'fadeIn 0.5s ease-in-out',
+  },
+  fadeInKeyframes: `
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
+  `,
+  table: {
+    borderCollapse: 'collapse',
+    textAlign: 'center',
+    width: '100%',
+  },
+  tableBorder: {
+    border: '1px solid black',
+  },
+  photoPreview: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    marginTop: '1rem',
+    gap: '1rem',
+  },
+  photoImg: {
+    width: 120,
+    height: 120,
+    objectFit: 'cover',
+    borderRadius: 8,
+  },
+};
+
+function SoilAnalysisApp() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const [photoFiles, setPhotoFiles] = useState([]);
+  const chartRef = useRef(null);
+  const chartInstanceRef = useRef(null);
+
+  useEffect(() => {
+    if (isLoggedIn && activeSection === 'dashboard') {
+      renderChart();
+    }
+  }, [isLoggedIn, activeSection]);
+
+  const login = () => {
+    setIsLoggedIn(true);
+    setActiveSection('home');
   };
 
-  return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <h2>Welcome Back!</h2>
-        <p>Login to access your soil analysis dashboard.</p>
-        <form onSubmit={handleLogin}>
-          <div className="input-group">
-            <label>Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          </div>
-          <div className="input-group">
-            <label>Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          </div>
-          <button type="submit" className="auth-button">Login</button>
-        </form>
-        <p className="switch-auth">
-          Don't have an account? <Link to="/signup">Sign up</Link>
+  const signup = () => {
+    alert('Signup functionality can be added here.');
+  };
+
+  const showSection = (sectionId) => {
+    setActiveSection(sectionId);
+  };
+
+  const previewPhotos = (event) => {
+    setPhotoFiles(Array.from(event.target.files));
+  };
+
+  const renderChart = () => {
+    if (chartInstanceRef.current) {
+      chartInstanceRef.current.destroy();
+    }
+    const ctx = chartRef.current.getContext('2d');
+    chartInstanceRef.current = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Nitrogen', 'Phosphorus', 'Potassium', 'pH'],
+        datasets: [
+          {
+            label: 'Soil Composition',
+            data: [45, 30, 60, 6.5],
+            backgroundColor: ['#4e54c8', '#8f94fb', '#3cba92', '#e8c3b9'],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+        },
+      },
+    });
+  };
+
+  // Optional: Inline style for nav items with hover effect
+  // Using simple stateful hover handling would be verbose, so skipping.
+
+  if (!isLoggedIn) {
+    return (
+      <div style={styles.authContainer}>
+        <h2>Soil Analysis App</h2>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Email</label>
+          <input type="email" id="email" style={styles.input} />
+        </div>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Password</label>
+          <input type="password" id="password" style={styles.input} />
+        </div>
+        <button style={styles.button} onClick={login}>
+          Login
+        </button>
+        <p style={{ marginTop: '1rem' }}>
+          Don't have an account?{' '}
+          <span
+            style={{ color: '#4e54c8', cursor: 'pointer' }}
+            onClick={signup}
+          >
+            Sign Up
+          </span>
         </p>
       </div>
-    </div>
-  );
-};
-
-// Signup Page
-const SignupPage = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-
-  const handleSignup = (e) => {
-    e.preventDefault();
-    if (username && email && password) {
-      console.log('Signing up with:', { username, email, password });
-      alert('Signup successful! Please log in.');
-      navigate('/login');
-    } else {
-      alert('Please fill out all fields.');
-    }
-  };
+    );
+  }
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <h2>Create Account</h2>
-        <p>Get started with your soil analysis journey.</p>
-        <form onSubmit={handleSignup}>
-          <div className="input-group">
-            <label>Username</label>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
-          </div>
-          <div className="input-group">
-            <label>Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          </div>
-          <div className="input-group">
-            <label>Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          </div>
-          <button type="submit" className="auth-button">Sign Up</button>
-        </form>
-        <p className="switch-auth">
-          Already have an account? <Link to="/login">Log in</Link>
-        </p>
-      </div>
-    </div>
-  );
-};
+    <div style={styles.app}>
+      <style>{styles.fadeInKeyframes}</style>
+      <nav style={styles.nav}>
+        <h1>Soil Analysis</h1>
+        <ul style={styles.navUl}>
+          {['home', 'dashboard', 'photos', 'analysis', 'reports', 'profile', 'contact'].map((section) => (
+            <li
+              key={section}
+              style={{
+                ...styles.navLi,
+                textDecoration: activeSection === section ? 'underline' : 'none',
+                cursor: 'pointer',
+              }}
+              onClick={() => showSection(section)}
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1).replace(/([A-Z])/g, ' $1')}
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-// Home Page
-const HomePage = ({ setIsAuthenticated }) => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    navigate('/login');
-  };
-
-  const soilData = {
-    id: 'SAMPLE-001',
-    date: '2025-08-04',
-    nutrients: {
-      nitrogen: { value: 25, unit: 'ppm', status: 'Low' },
-      phosphorus: { value: 50, unit: 'ppm', status: 'Optimal' },
-      potassium: { value: 120, unit: 'ppm', status: 'High' },
-    },
-    recommendation:
-      'Add a nitrogen-rich fertilizer. Avoid high-potassium amendments for the next 6 months.',
-  };
-
-  return (
-    <div className="homepage-container">
-      <header className="homepage-header">
-        <h1>Soil Nutrient Analysis</h1>
-        <button onClick={handleLogout} className="logout-button">Logout</button>
-      </header>
-      <main className="dashboard">
-        <div className="card analysis-card">
-          <h2>Analysis for Sample: {soilData.id}</h2>
-          <p><strong>Analysis Date:</strong> {soilData.date}</p>
-          <div className="nutrients-grid">
-            {Object.entries(soilData.nutrients).map(([key, data]) => (
-              <div key={key} className={`nutrient-item status-${data.status.toLowerCase()}`}>
-                <h3>{key}</h3>
-                <p className="nutrient-value">{data.value} {data.unit}</p>
-                <p className="nutrient-status">{data.status}</p>
-              </div>
-            ))}
-          </div>
+      <section
+        style={{ ...styles.section, display: activeSection === 'home' ? 'block' : 'none' }}
+        className={activeSection === 'home' ? 'active' : ''}
+      >
+        <div style={styles.hero}>
+          <h2>Welcome to Soil Analysis</h2>
+          <p>
+            Analyze soil health, upload samples, and get AI-driven insights for
+            better farming.
+          </p>
+          <button style={styles.button} onClick={() => showSection('dashboard')}>
+            Go to Dashboard
+          </button>
         </div>
-        <div className="card recommendation-card">
-          <h2>AI-Powered Recommendations</h2>
-          <p>{soilData.recommendation}</p>
-        </div>
-        <div className="card upload-card">
-          <h2>Analyze a New Sample</h2>
-          <p>Upload a photo of your soil sample to get started.</p>
-          <input type="file" className="upload-input" />
-          <button className="auth-button">Analyze</button>
-        </div>
-      </main>
-    </div>
-  );
-};
+      </section>
 
-// App Component
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+      <section
+        style={{ ...styles.section, display: activeSection === 'dashboard' ? 'block' : 'none' }}
+        className={activeSection === 'dashboard' ? 'active' : ''}
+      >
+        <h2>Dashboard</h2>
+        <div style={styles.cardGrid}>
+          <div style={styles.card}>Nitrogen: 45%</div>
+          <div style={styles.card}>Phosphorus: 30%</div>
+          <div style={styles.card}>Potassium: 60%</div>
+          <div style={styles.card}>pH: 6.5</div>
+        </div>
+        <canvas
+          id="soilChart"
+          ref={chartRef}
+          style={{ marginTop: '2rem', maxWidth: '100%' }}
+        ></canvas>
+      </section>
 
-  return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route
-          path="/home"
-          element={isAuthenticated ? <HomePage setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/login" />}
+      <section
+        style={{ ...styles.section, display: activeSection === 'photos' ? 'block' : 'none' }}
+        className={activeSection === 'photos' ? 'active' : ''}
+      >
+        <h2>Upload Soil Photos</h2>
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={previewPhotos}
+          style={{ marginBottom: '1rem' }}
         />
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-    </Router>
+        <div style={styles.photoPreview}>
+          {photoFiles.map((file, i) => (
+            <img
+              key={i}
+              src={URL.createObjectURL(file)}
+              alt="soil preview"
+              style={styles.photoImg}
+              onLoad={() => URL.revokeObjectURL(file)}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section
+        style={{ ...styles.section, display: activeSection === 'analysis' ? 'block' : 'none' }}
+        className={activeSection === 'analysis' ? 'active' : ''}
+      >
+        <h2>AI Analysis</h2>
+        <div style={styles.card}>
+          <p>Soil condition: Healthy</p>
+          <p>Recommendation: Use organic compost to balance nitrogen.</p>
+        </div>
+      </section>
+
+      <section
+        style={{ ...styles.section, display: activeSection === 'reports' ? 'block' : 'none' }}
+        className={activeSection === 'reports' ? 'active' : ''}
+      >
+        <h2>Reports</h2>
+        <table style={styles.table} border="1">
+          <thead>
+            <tr>
+              <th style={styles.tableBorder}>Date</th>
+              <th style={styles.tableBorder}>N</th>
+              <th style={styles.tableBorder}>P</th>
+              <th style={styles.tableBorder}>K</th>
+              <th style={styles.tableBorder}>pH</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={styles.tableBorder}>12 Aug 2025</td>
+              <td style={styles.tableBorder}>45%</td>
+              <td style={styles.tableBorder}>30%</td>
+              <td style={styles.tableBorder}>60%</td>
+              <td style={styles.tableBorder}>6.5</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section
+        style={{ ...styles.section, display: activeSection === 'profile' ? 'block' : 'none' }}
+        className={activeSection === 'profile' ? 'active' : ''}
+      >
+        <h2>User Profile</h2>
+        <img
+          src="https://via.placeholder.com/120"
+          alt="profile"
+          style={styles.profilePic}
+          id="profilePic"
+        />
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Name</label>
+          <input type="text" defaultValue="Farmer John" style={styles.input} />
+        </div>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Email</label>
+          <input type="email" defaultValue="farmer@example.com" style={styles.input} />
+        </div>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Phone</label>
+          <input type="text" defaultValue="+91 9876543210" style={styles.input} />
+        </div>
+        <button style={styles.button}>Update Profile</button>
+      </section>
+
+      <section
+        style={{ ...styles.section, display: activeSection === 'contact' ? 'block' : 'none' }}
+        className={activeSection === 'contact' ? 'active' : ''}
+      >
+        <h2>Contact Us</h2>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Your Message</label>
+          <textarea rows="5" style={styles.textarea}></textarea>
+        </div>
+        <button style={styles.button}>Send</button>
+      </section>
+    </div>
   );
 }
 
-export default App;
+export default SoilAnalysisApp;
